@@ -36,6 +36,40 @@ export default function TranscriptionAndComments() {
         
     }
 
+    const handleEdit = (e: FormEvent) => {
+        e.preventDefault();
+
+        const form = e.target
+        const formData = new FormData(form);
+        const commentSent = formData.get("commentInput");
+        const lineId = parseInt(formData.get("lineId"));
+        const prevCommentIndex = comments.findIndex((item) => {item.lineId == lineId})
+        const newComment = {
+            lineId: lineId,
+            text: commentSent
+        }
+        const commentsList = [...comments]
+        commentsList.splice(prevCommentIndex, 1)
+        commentsList.splice(prevCommentIndex, 0, newComment)
+        commentsList.sort(function(a,b) {
+            return (b.lineId > a.lineId) ? -1 : 1
+        })
+        console.log(commentsList)
+        setComments(commentsList)
+    }
+
+    const handleDelete = (index: number) => {
+
+        const commentsList = [...comments]
+        const commentIndex = comments.findIndex((item) => {item.lineId == index})
+        commentsList.splice(commentIndex, 1)
+
+        commentsList.sort(function(a,b) {
+            return (b.lineId > a.lineId) ? -1 : 1
+        })
+        console.log(commentsList)
+        setComments(commentsList)
+    }
     const handleSend = (e: FormEvent) => {
         e.preventDefault();
 
@@ -62,7 +96,7 @@ export default function TranscriptionAndComments() {
             <div id="transcript-line" key={index} className="w-full flex justify-between items-center relative hover:bg-gray-200 p-2 rounded pr-4">
                 <span>{line}</span>
                 {/* <Button onClick={() => { handleOpen(index) }} id="add-comment-button" className="aspect-square p-0 rounded-full absolute right-0 translate-x-12 hover:scale-110"><MessageSquarePlus /></Button> */}
-                <Dialog>
+                {!comment ? <Dialog>
                     <DialogTrigger id="add-comment-button" className="bg-black text-white aspect-square w-10 flex justify-center items-center p-0 rounded-full absolute right-0 translate-x-[50%] hover:scale-110"><MessageSquarePlus /></DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
@@ -77,10 +111,45 @@ export default function TranscriptionAndComments() {
                             <DialogClose><Button type="submit" ><Send /></Button></DialogClose>
                         </form>
                     </DialogContent>
-                </Dialog>
-
+                </Dialog> : <></>
+                }
                 {
-                    comment ? <div style={{position: 'absolute', marginLeft: '40rem', overflowWrap: 'break-word'}} className="bg-white rounded max-w-[500px] p-2">{comment.text}</div>
+                    comment ? 
+                    <div style={{position: 'absolute', marginLeft: '40rem', overflowWrap: 'break-word'}} className="bg-white rounded min-w-[200px] max-w-[500px] p-2">
+                        <span>Line {index}: {comment.text}</span>
+                        <Dialog>
+                            <DialogTrigger id="edit-comment-button" className="bg-black text-white aspect-square w-10 flex justify-center items-center p-0 rounded-full hover:scale-110"><MessageSquarePlus /></DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle className="text-black">Edit this Comment</DialogTitle>
+                                    <DialogDescription>
+                                        Editing on &apos;{line}&apos;
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <form onSubmit={handleEdit}>
+                                    <input type="hidden" name="lineId" value={index}></input>
+                                    <Input defaultValue="" name="commentInput" type="text" placeholder="Type your response here" className="text-black" />
+                                    <DialogClose><Button type="submit" ><Send /></Button></DialogClose>
+                                </form>
+                            </DialogContent>
+                        </Dialog>
+                        <Dialog>
+                            <DialogTrigger id="delete-comment-button" className="bg-black text-white aspect-square w-10 flex justify-center items-center p-0 rounded-full hover:scale-110"><MessageSquarePlus /></DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle className="text-black">Delete this Comment</DialogTitle>
+                                    <DialogDescription>
+                                        Are you sure you would like to delete this comment?
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogClose>
+                                    <Button type="submit" onClick={() => handleDelete(index)}><Send /></Button>
+                                    <Button>Cancel</Button>
+                                </DialogClose>
+                            </DialogContent>
+                        </Dialog>
+                        
+                    </div>
                     : <></>
                 }
             </div>
