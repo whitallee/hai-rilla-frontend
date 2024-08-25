@@ -22,8 +22,15 @@ const drawerWidth = 240;
 
 export default function SideBar() {
   const [addTab, setaddTab] = useState(["Account", "Billing", "Tabs"]);
+  const [addLink, setaddLink] = useState([]);
   const length = addTab.length;
-
+  function deleteItem(index) {
+    const newArray = [
+      ...addTab.slice(0, index), // Elements before the one to delete
+      ...addTab.slice(index + 1), // Elements after the one to delete
+    ];
+    setaddTab(newArray);
+  }
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -47,7 +54,11 @@ export default function SideBar() {
         <Divider />
         <List>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem
+              key={text}
+              disablePadding
+              onClick={() => setaddTab((addTab) => [...addTab, " New Tab"])}
+            >
               <ListItemButton>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -66,11 +77,15 @@ export default function SideBar() {
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
+                <Button
+                  onClick={() => setaddTab((addTab) => [...addTab, " New Tab"])}
+                >
+                  {index === 2 && <AddIcon />}
+                </Button>
+                <button onClick={() => deleteItem(index)}>
+                  {index > 2 && <MailIcon />}
+                </button>
               </ListItemButton>
-              <Button onClick={() => setaddTab([...addTab, " New Tab"])}>
-                {index === 2 && <AddIcon />}
-              </Button>
-              {index % 2 === 0 ? <AddIcon /> : <MailIcon />}
             </ListItem>
           ))}
         </List>
