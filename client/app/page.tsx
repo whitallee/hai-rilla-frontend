@@ -4,7 +4,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/components/ui/resizable"
+} from "@/components/ui/resizable";
 
 import Image from "next/image";
 
@@ -20,7 +20,6 @@ export default function Home() {
           <TranscriptionAndComments />
         </ResizablePanel>
       </ResizablePanelGroup>
-
     </main>
   );
 }
