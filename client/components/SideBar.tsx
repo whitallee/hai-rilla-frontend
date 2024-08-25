@@ -15,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-const drawerWidth = 240;
 export default function SideBar() {
   const [sideBar, setSideBar] = useState(false);
 
@@ -27,14 +26,14 @@ export default function SideBar() {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        
       ></AppBar>
       <Drawer
         sx={{
-          width: drawerWidth,
+        
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: '20%',
             boxSizing: "border-box",
           },
         }}
@@ -42,7 +41,6 @@ export default function SideBar() {
         anchor="left"
       >
         <Toolbar />
-        <Divider />
         <List>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem key={text} disablePadding>
@@ -55,19 +53,7 @@ export default function SideBar() {
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {["Account", "Billing", "Tabs"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+  
       </Drawer>
     </Box>
   );

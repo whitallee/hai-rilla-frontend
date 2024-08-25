@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen items-center justify-between">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={20} minSize={10}>
-          <SideBar />
+        <ResizablePanel defaultSize={20} minSize={10} >
+          <SideBar/>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={80} minSize={10}>

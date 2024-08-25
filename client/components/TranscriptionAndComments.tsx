@@ -1,6 +1,6 @@
 'use client'
 
-import { MessageSquarePlus, Send } from "lucide-react"
+import { MessageSquarePlus } from "lucide-react"
 import { Button } from "./ui/button"
 import {
     Popover,
@@ -11,14 +11,13 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 
 
-import { FormEvent, useState } from "react"
+import { useState } from "react"
 import { Input } from "./ui/input"
 
 export default function TranscriptionAndComments() {
@@ -28,14 +27,11 @@ export default function TranscriptionAndComments() {
     const [comments, setComments] = useState([{ lineId: 2, text: "Refrain from using informal greetings in the future. It seems unprofessional.", files: [] }])
     const [input, setInput] = useState("")
 
-    const handleSend = (e: FormEvent) => {
-        e.preventDefault();
-
-        const form = e.target
-        const formData = new FormData(form);
-        const commentSent = formData.get("commentInput");
-        const lineId = formData.get("")
-        console.log(commentSent)
+    const handleOpen = (lineId: number) => {
+        // setCommentModalOpen(true)
+    }
+    const handleClose = (lineId: number) => {
+        // setCommentModalOpen(false)
     }
 
     function TranscriptLine({ line, index }: { line: string, index: number }) {
@@ -54,11 +50,7 @@ export default function TranscriptionAndComments() {
                                 Commenting on &apos;{line}&apos;
                             </DialogDescription>
                         </DialogHeader>
-                        <form>
-                            <input type="hidden" name="lineId" value={index}></input>
-                            <Input defaultValue="" name="commentInput" type="text" placeholder="Type your response here" className="text-black" />
-                            <Button type="submit" onSubmit={handleSend}><Send /></Button>
-                        </form>
+                        <Input onChange={(e) => { setInput(e.target.value) }} defaultValue={input} type="text" placeholder="Type your response here" className="text-black" />
                     </DialogContent>
                 </Dialog>
 
