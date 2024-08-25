@@ -13,15 +13,17 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import { Button } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 const drawerWidth = 240;
-export default function SideBar() {
-  const [sideBar, setSideBar] = useState(false);
 
-  function handleChangeSideBar() {
-    setSideBar((prevState) => !prevState);
-  }
+export default function SideBar() {
+  const [addTab, setaddTab] = useState(["Account", "Billing", "Tabs"]);
+  const length = addTab.length;
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -57,14 +59,18 @@ export default function SideBar() {
         </List>
         <Divider />
         <List>
-          {["Account", "Billing", "Tabs"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+          {addTab.map((text, index) => (
+            <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
+              <Button onClick={() => setaddTab([...addTab, " New Tab"])}>
+                {index === 2 && <AddIcon />}
+              </Button>
+              {index % 2 === 0 ? <AddIcon /> : <MailIcon />}
             </ListItem>
           ))}
         </List>
